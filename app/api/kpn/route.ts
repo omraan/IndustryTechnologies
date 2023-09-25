@@ -1,6 +1,6 @@
 import { db } from "@/firebase";
 import { child, get, ref, set, update } from "firebase/database";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 interface BodyContent {
 	bn: string;
@@ -19,6 +19,10 @@ interface PostBody {
 			unit: string;
 		};
 	};
+}
+
+export async function GET(request: Request) {
+	return NextResponse.json({ text: "test" }, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {

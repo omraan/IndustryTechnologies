@@ -24,12 +24,10 @@ interface PostBody {
 export async function POST(req: NextRequest) {
 	const body: Record<string, BodyContent[]> = await req.json();
 	const bodyContent = body[Object.keys(body)[0]];
-
 	const device = bodyContent[0].bn;
 	const time = bodyContent[0].bt;
-
 	let postBody: PostBody = {};
-	console.log(bodyContent);
+
 	bodyContent.map(async (x: BodyContent, index: number) => {
 		if (index > 0) {
 			const kpnRef = child(ref(db), `kpn/${device}/${x.n}`);
@@ -49,9 +47,7 @@ export async function POST(req: NextRequest) {
 		}
 	});
 
-	console.log(postBody);
-
-	return new Response("OK", {
+	return new Response(postBody.toString(), {
 		status: 200,
 	});
 }

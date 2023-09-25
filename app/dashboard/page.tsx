@@ -61,6 +61,13 @@ export default async function Home() {
 	// 	);
 	// }, []);
 	const makeApiCall = async () => {
+		const initData = [
+			{ bn: "urn:dev:DVNUUID:1513bfb2-b495-494d-b8d8-9dead23190a3:", bt: 1695586444 },
+			{ n: "battery", u: "%", vs: "33.0" },
+			{ n: "accelerationX", u: "m/s2", v: -0.13 },
+			{ n: "accelerationY", u: "m/s2", v: 1.42 },
+			{ n: "accelerationZ", u: "m/s2", v: 9.71 },
+		];
 		const examplePostData = {
 			// "-Nf7pI4eEnejKR1Uplui": [
 			// 	{ bn: "urn:dev:DVNUUID:1513bfb2-b495-494d-b8d8-9dead23190a3:", bt: 1695586529 },
@@ -83,13 +90,13 @@ export default async function Home() {
 			// 	{ n: "accelerationY", u: "m/s2", v: 1.41 },
 			// 	{ n: "accelerationZ", u: "m/s2", v: 9.68 },
 			// ],
-			"-Nf7pz0Oj-VQgYEQX0hj": [
-				{ bn: "urn:dev:DVNUUID:1513bfb2-b495-494d-b8d8-9dead23190a3:", bt: 1695586444 },
-				{ n: "battery", u: "%", vs: "33.0" },
-				{ n: "accelerationX", u: "m/s2", v: -0.13 },
-				{ n: "accelerationY", u: "m/s2", v: 1.42 },
-				{ n: "accelerationZ", u: "m/s2", v: 9.71 },
-			],
+			// "-Nf7pz0Oj-VQgYEQX0hj": [
+			// 	{ bn: "urn:dev:DVNUUID:1513bfb2-b495-494d-b8d8-9dead23190a3:", bt: 1695586444 },
+			// 	{ n: "battery", u: "%", vs: "33.0" },
+			// 	{ n: "accelerationX", u: "m/s2", v: -0.13 },
+			// 	{ n: "accelerationY", u: "m/s2", v: 1.42 },
+			// 	{ n: "accelerationZ", u: "m/s2", v: 9.71 },
+			// ],
 			// "-Nf7qCmoD3twcD7MLPko": [
 			// 	{ bn: "urn:dev:DVNUUID:1513bfb2-b495-494d-b8d8-9dead23190a3:", bt: 1695586769 },
 			// 	{ n: "battery", u: "%", vs: "33.0" },
@@ -124,11 +131,11 @@ export default async function Home() {
 			// 	{ n: "accelerationZ", u: "m/s2", v: 9.35 },
 			// ],
 		};
-		console.log(JSON.stringify(examplePostData));
-		await fetch("/api/kpn", {
+		let response = await fetch("/api/kpn", {
 			method: "POST",
-			body: JSON.stringify(examplePostData),
+			body: JSON.stringify(initData),
 		});
+		response.json().then((data) => console.log(data));
 	};
 	return (
 		<main className="">

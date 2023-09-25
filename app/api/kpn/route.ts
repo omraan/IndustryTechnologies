@@ -2,15 +2,6 @@ import { db } from "@/firebase";
 import { child, get, ref, set, update } from "firebase/database";
 import { NextRequest, NextResponse } from "next/server";
 
-interface BodyContent {
-	bn: string;
-	bt: number;
-	n: string;
-	v?: string;
-	vs: string;
-	u: string;
-}
-
 interface PostBody {
 	[key: string]: {
 		[key: string]: {
@@ -26,18 +17,19 @@ export async function GET(request: Request) {
 }
 
 export async function POST(req: NextRequest) {
-	const body: Record<string, BodyContent[]> = await req.json();
-	const bodyContent = body[Object.keys(body)[0]];
-	const device = bodyContent[0].bn;
-	const time = bodyContent[0].bt;
+	const body = await req.json();
+	const device = body[0].bn;
+	const time = body[0].bt;
 	let postBody: PostBody = {};
-
-	bodyContent.map(async (x: BodyContent, index: number) => {
+	let d;
+	body.map(async (x: any, index: number) => {
 		if (index > 0) {
 			const kpnRef = child(ref(db), `kpn/${device}/${x.n}`);
 
 			const snapshot = await get(kpnRef);
+			d = snapshot;
 			const data = snapshot.val();
+
 			postBody[x.n] = {
 				...data,
 				[time]: {
@@ -46,12 +38,16 @@ export async function POST(req: NextRequest) {
 					unit: x.u,
 				},
 			};
-
 			await update(kpnRef, postBody[x.n]);
 		}
 	});
 
-	return new Response(postBody.toString(), {
+	// const kpnRef = child(ref(db), `kpn/${device}/${body[4].n}`);
+	// const snapshot = await get(kpnRef);
+	return new Response(JSON.stringify({ d: postBody }), {
 		status: 200,
+		headers: {
+			"Content-Type": "application/json",
+		},
 	});
 }
